@@ -1,24 +1,24 @@
-# Publishing Strategic Meeting Prep v1.1.0
+# Strategic Meeting Prep — verified v1.1.0 publication
 
-## Current state
+## Published release
 
-The dedicated public repository is available and contains documentation, core skill instructions, an attestation, and the automated `.github/workflows/complete-release.yml`. The **frozen installable ZIP is not yet in GitHub**. Do not claim the GitHub Release is live until it appears on the public Releases page.
+The v1.1.0 GitHub release is **public**, not a draft or prerelease:
 
-## One remaining source-upload step
+- [Release page](https://github.com/evansmusitu/strategic-meeting-prep/releases/tag/v1.1.0)
+- [Installable ZIP](https://github.com/evansmusitu/strategic-meeting-prep/releases/download/v1.1.0/strategic-meeting-prep-v1.1.0.zip)
+- [Successful release workflow](https://github.com/evansmusitu/strategic-meeting-prep/actions/runs/42675670966)
+- Tag commit: `d6bba062f189840e31ad52da9883f4f71c085e23`
+- Expected archive SHA-256: `742ec8009110e7e918ff7990eb51dd7325564456f7c7d57b3110c23f56c89e33`
+- Artifact: 51,536 bytes, 26 files. The GitHub release reports the matching digest.
 
-1. Download the **original, frozen** `strategic-meeting-prep-v1.1.0.zip` archive from the ChatGPT release conversation.
-2. Open [GitHub upload to `dist/`](https://github.com/evansmusitu/strategic-meeting-prep/upload/main/dist), select the ZIP, and commit directly to `main`, keeping the filename unchanged.
-3. Confirm the archive's SHA-256 is `742ec8009110e7e918ff7990eb51dd7325564456f7c7d57b3110c23f56c89e33`.
-4. Watch [the finalization Actions workflow](https://github.com/evansmusitu/strategic-meeting-prep/actions/workflows/complete-release.yml). It checks the exact hash, extracts the skill source, reruns deterministic gates, restores the frozen benchmark snapshot, checks every source byte, commits source, creates `v1.1.0`, and invokes `gh release create`.
+The prior instructions asking for a manual ZIP upload are obsolete. The archived source, release notes, installation guidance, and benchmark certificate are available from GitHub.
 
-## Independent verification
+## Maintenance and next versions
 
-Open [Releases](https://github.com/evansmusitu/strategic-meeting-prep/releases/tag/v1.1.0) and verify `v1.1.0` is public (not a draft), the archive can be downloaded, and the archive SHA-256 matches the frozen hash. A successful workflow run is not sufficient unless the public release is visible.
+The release tag should remain immutable. For any new version, freeze the new candidate, regenerate its archive and checksums, run deterministic and live behavioral evaluations, review licensing and any compatibility changes, then use a new semantic version/tag. Do not re-tag or overwrite the v1.1.0 artifact.
 
-```bash
-gh release view v1.1.0 --repo evansmusitu/strategic-meeting-prep --json url,isDraft,isPrerelease,tagName
-```
+## Important limits
 
-## Certification and license
+Structural checks passed (29/29 structural, 15/15 corpus, 5/5 mutation, 5/5 unit tests). These are not live model performance evidence; behavioral certification is inconclusive. GitHub publication does not install the skill in ChatGPT or place it on Agensi or any other commercial marketplace. Creator contracts, payouts and marketplace onboarding must be confirmed separately.
 
-Static and benchmark-coverage tests passed locally, but no live model behavior baseline or blinded holdout has been executed. Behavioral certification is inconclusive. No public reuse license has been selected. A GitHub Release does not itself install the skill in ChatGPT or list a plugin in any marketplace.
+No public reuse license is currently selected. See [LICENSE_STATUS.md](LICENSE_STATUS.md).
