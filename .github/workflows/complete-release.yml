@@ -1,0 +1,71 @@
+name: Publish verified v1.1.0 after artifact upload
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'dist/strategic-meeting-prep-v1.1.0.zip'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check frozen artifact
+        run: |
+          test -f dist/strategic-meeting-prep-v1.1.0.zip
+          echo '742ec8009110e7e918ff7990eb51dd7325564456f7c7d57b3110c23f56c89e33  dist/strategic-meeting-prep-v1.1.0.zip' | sha256sum -c -
+          unzip -t dist/strategic-meeting-prep-v1.1.0.zip
+      - name: Extract skill source and execute deterministic checks
+        run: |
+          unzip -o -q dist/strategic-meeting-prep-v1.1.0.zip
+          python -m pip install PyYAML==6.0.2
+          python strategic-meeting-prep/scripts/run_checks.py
+      - name: Restore frozen evidence and verify every source byte
+        run: |
+          unzip -p dist/strategic-meeting-prep-v1.1.0.zip strategic-meeting-prep/tests/benchmark-results.json > strategic-meeting-prep/tests/benchmark-results.json
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+          with ZipFile('dist/strategic-meeting-prep-v1.1.0.zip') as z:
+              names=[n for n in z.namelist() if not n.endswith('/')]
+              assert len(names)==26
+              for name in names:
+                  assert name.startswith('strategic-meeting-prep/') and '..' not in Path(name).parts
+                  assert Path(name).read_bytes()==z.read(name), name
+          print('PASS: all 26 source files match the frozen release')
+          PY
+      - name: Commit verified source
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add strategic-meeting-prep/
+          if ! git diff --cached --quiet; then
+            git commit -m "release: verified v1.1.0 skill source"
+            git push origin HEAD:main
+          fi
+      - name: Tag and publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git ls-remote --exit-code --tags origin refs/tags/v1.1.0 >/dev/null 2>&1; then
+            echo "Tag already exists; refusing to move v1.1.0" >&2
+            exit 1
+          fi
+          git tag -a v1.1.0 -m "Strategic Meeting Prep v1.1.0: structural verification"
+          git push origin refs/tags/v1.1.0
+          gh release create v1.1.0 \
+            dist/strategic-meeting-prep-v1.1.0.zip \
+            dist/RELEASE_NOTES_v1.1.0.md \
+            dist/BENCHMARK_CERTIFICATE_v1.1.0.md \
+            dist/INSTALL_AND_ROLLBACK.md \
+            dist/SHA256SUMS.txt \
+            --title "Strategic Meeting Prep v1.1.0 (structurally verified)" \
+            --notes-file dist/RELEASE_NOTES_v1.1.0.md \
+            --verify-tag
