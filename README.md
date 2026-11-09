@@ -1,14 +1,25 @@
 # Strategic Meeting Prep — Agent Skill
 
-**Version:** 1.1.0  ·  **Release:** 2026-11-09  ·  **Status:** Locally verified; live behavior certification pending.
+**Version:** 1.1.0 · **Status:** GitHub source staging; frozen release ZIP upload pending; behavioral certification not yet measured.
 
-Strategic Meeting Prep is an Agent Skill that turns scattered meeting context into an evidence-grounded 60-second brief, stakeholder questions, decision strategy, rehearsal, and action-oriented follow-up. It supports urgent, routine, and high-stakes preparations for interviews, executive reviews, sales calls, negotiations, technical design meetings, and difficult conversations.
+Strategic Meeting Prep is a reusable Agent Skill for evidence-grounded meeting briefs, decision strategies, stakeholder intelligence, difficult questions, interview and negotiation rehearsal, and accountable follow-up.
 
-## Get the skill
+## Publication status
 
-Download the installable skill from this repository’s **Releases → v1.1.0** page **after** the GitHub release workflow completes. The identical, locally validated archive is checked in as [`dist/strategic-meeting-prep-v1.1.0.zip`](dist/strategic-meeting-prep-v1.1.0.zip). Extract the ZIP and import its `strategic-meeting-prep/` directory through the supported Agent Skills workflow on your host. A download does **not** activate the skill automatically.
+The GitHub repository contains the principal skill instructions, documentation, certification report and an automated release workflow. **The complete 26-file installable ZIP is not yet uploaded, and the GitHub Release is not yet public.** For current status, inspect [Releases](../../releases) rather than treating documentation as publication proof.
 
-## Usage
+### Complete v1.1.0 publication
+
+1. Download the frozen `strategic-meeting-prep-v1.1.0.zip` from the ChatGPT release conversation.
+2. [Upload it to the `dist/` directory on `main`](https://github.com/evansmusitu/strategic-meeting-prep/upload/main/dist), preserving its filename.
+3. The [finalization workflow](.github/workflows/complete-release.yml) verifies its fixed SHA-256, extracts the complete source, runs the deterministic checks, and attempts to publish the immutable `v1.1.0` GitHub Release.
+4. Verify the [public release](../../releases/tag/v1.1.0) actually exists and contains the ZIP and notes. An Actions run alone is not proof of release.
+
+Expected SHA-256:
+
+`742ec8009110e7e918ff7990eb51dd7325564456f7c7d57b3110c23f56c89e33`
+
+## Example usage
 
 > Prepare me for tomorrow's steering committee. I need approval for a two-week pilot. Give me evidence-backed talking points, likely objections, and a 60-second brief.
 
@@ -16,28 +27,16 @@ Download the installable skill from this repository’s **Releases → v1.1.0** 
 
 > My supplier call starts in five minutes. What's the most important question and closing ask?
 
-See [`strategic-meeting-prep/README.md`](strategic-meeting-prep/README.md) for full usage and [`dist/INSTALL_AND_ROLLBACK.md`](dist/INSTALL_AND_ROLLBACK.md) for installation and rollback.
+See [skill instructions](strategic-meeting-prep/SKILL.md), [skill README](strategic-meeting-prep/README.md), and [publishing guide](PUBLISHING.md).
 
-## Quality and certification
+## Test evidence
 
-Local checks: **29/29** structural, **15/15** evaluation-corpus checks, **5/5** mutation, **5/5** scorer unit tests, and ZIP integrity: **passed**. This is **not** live-model performance evidence. Behavioral certification remains **inconclusive** pending baseline/candidate runs, independent grading, and fresh blind holdouts. See [`dist/BENCHMARK_CERTIFICATE_v1.1.0.md`](dist/BENCHMARK_CERTIFICATE_v1.1.0.md).
+The frozen local candidate passed **29/29 structural**, **15/15 evaluation-corpus**, **5/5 mutation**, and **5/5 evaluator unit tests**, plus ZIP integrity and source parity checks. These are deterministic package checks, **not** evidence of production agent performance. Live behavioral certification remains **inconclusive**.
 
-To rerun locally:
+Details: [benchmark certificate](dist/BENCHMARK_CERTIFICATE_v1.1.0.md).
 
-```bash
-python strategic-meeting-prep/scripts/run_checks.py
-cd dist && sha256sum -c SHA256SUMS.txt
-```
+## License
 
-## Repository layout
+No public reuse license has been selected. Public visibility alone does not authorize third-party modification or redistribution. See [license status](LICENSE_STATUS.md).
 
-- `strategic-meeting-prep/` — installable Agent Skill source, tests and support docs.
-- `dist/` — frozen v1.1.0 release archive, notes, hashes and certification.
-- `.github/workflows/` — continuous checks and tag-triggered GitHub Release creation.
-- `publish-github.sh` — safe publisher for a new public repository under your authenticated account.
-
-## License and support
-
-**No public reuse license has been granted.** The files are publicly inspectable if this repository is made public, but that does not make them open-source licensed. The owner must explicitly select a license before downstream redistribution/modification is permitted. Contributions should not be submitted until a contribution license is chosen.
-
-The skill does not grant connector access or permission to send messages or change calendars. It must respect user authorization. No official certification by Agent Skills maintainers is implied.
+The skill does not automatically gain access to any calendar, email, account or connector; all external actions remain subject to user authorization.
