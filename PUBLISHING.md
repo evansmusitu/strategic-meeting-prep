@@ -1,31 +1,24 @@
-# Publishing v1.1.0
+# Publishing Strategic Meeting Prep v1.1.0
 
-The GitHub connector available during release preparation can publish to **existing** repositories but cannot create new repositories or GitHub Releases. The alternative browser publication route was blocked by insufficient credits. These instructions use GitHub CLI to finish publication under the authorized user's account. Do not confuse local packaging with a public release.
+## Current state
 
-## One-time setup
+The dedicated public repository is available and contains documentation, core skill instructions, an attestation, and the automated `.github/workflows/complete-release.yml`. The **frozen installable ZIP is not yet in GitHub**. Do not claim the GitHub Release is live until it appears on the public Releases page.
 
-Install Git and [GitHub CLI](https://cli.github.com/). Sign in using `gh auth login`. Configure your local Git author details (`git config --global user.name ...` and `git config --global user.email ...`) if unset. Do not put credentials in this repository.
+## One remaining source-upload step
 
-## Publish
-
-From this repository root, run:
-
-```bash
-bash publish-github.sh
-```
-
-The script refuses to overwrite an existing GitHub repository or Git tag. It creates a new public repository named `strategic-meeting-prep` under the currently authenticated account, pushes an immutable initial commit and the `v1.1.0` annotated tag. The tag launches `.github/workflows/release.yml` to verify and publish the exact frozen `dist` artifacts as a GitHub Release. No license is added automatically.
+1. Download the **original, frozen** `strategic-meeting-prep-v1.1.0.zip` archive from the ChatGPT release conversation.
+2. Open [GitHub upload to `dist/`](https://github.com/evansmusitu/strategic-meeting-prep/upload/main/dist), select the ZIP, and commit directly to `main`, keeping the filename unchanged.
+3. Confirm the archive's SHA-256 is `742ec8009110e7e918ff7990eb51dd7325564456f7c7d57b3110c23f56c89e33`.
+4. Watch [the finalization Actions workflow](https://github.com/evansmusitu/strategic-meeting-prep/actions/workflows/complete-release.yml). It checks the exact hash, extracts the skill source, reruns deterministic gates, restores the frozen benchmark snapshot, checks every source byte, commits source, creates `v1.1.0`, and invokes `gh release create`.
 
 ## Independent verification
 
-Once workflow finishes:
+Open [Releases](https://github.com/evansmusitu/strategic-meeting-prep/releases/tag/v1.1.0) and verify `v1.1.0` is public (not a draft), the archive can be downloaded, and the archive SHA-256 matches the frozen hash. A successful workflow run is not sufficient unless the public release is visible.
 
 ```bash
-gh release view v1.1.0 --repo "$(gh api user --jq .login)/strategic-meeting-prep" --json url,isDraft,isPrerelease,tagName
+gh release view v1.1.0 --repo evansmusitu/strategic-meeting-prep --json url,isDraft,isPrerelease,tagName
 ```
 
-Check the public release page and download the ZIP to verify its SHA-256 matches `dist/SHA256SUMS.txt`. Verify the source folder's `SKILL.md` is present after unzip. Actual live behavioral tests remain a separate certification requirement.
+## Certification and license
 
-## ChatGPT distribution
-
-A GitHub Release does not install or publish a ChatGPT skill/plugin. Import the `strategic-meeting-prep/` folder via a host-supported Agent Skills or skill creation workflow if the user’s workspace provides one. A ChatGPT plugin marketplace listing requires platform-specific capabilities and approvals not established by this package. Mark those states pending until independently verified.
+Static and benchmark-coverage tests passed locally, but no live model behavior baseline or blinded holdout has been executed. Behavioral certification is inconclusive. No public reuse license has been selected. A GitHub Release does not itself install the skill in ChatGPT or list a plugin in any marketplace.
