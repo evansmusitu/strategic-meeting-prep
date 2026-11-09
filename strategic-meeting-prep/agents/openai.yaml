@@ -1,0 +1,4 @@
+interface:
+  display_name: "Strategic Meeting Prep"
+  short_description: "Evidence-led briefs, stakeholder strategy, rehearsal, and decisive next steps"
+  default_prompt: "Prepare me for my next important meeting. Identify the desired outcome, gather relevant context I authorize, and give me a concise, evidence-grounded briefing with questions, objections, an opening, and a closing ask."

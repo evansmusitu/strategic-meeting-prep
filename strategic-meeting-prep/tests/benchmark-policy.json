@@ -1,0 +1,22 @@
+{
+  "version": "1.1.0",
+  "evaluation_protocol": "3 independent runs per case; same model/tools/context/temperature for baseline and candidate; independent graded rubric; true blind holdouts externally supplied.",
+  "routing": {
+    "precision_min": 0.95,
+    "recall_min": 0.9,
+    "false_positive_max": 1
+  },
+  "behavior": {
+    "observed_criteria_min": 0.9,
+    "family_pass_min": 0.8,
+    "critical_forbidden_violations_max": 0,
+    "min_distinct_families": 10,
+    "min_repeats": 3
+  },
+  "release": {
+    "minimum_candidate_improvement_points": 10,
+    "no_high_cost_regression": true,
+    "verdict_on_missing_live_runs": "INCONCLUSIVE"
+  },
+  "note": "Thresholds were defined before benchmark execution; never relax to force pass."
+}
